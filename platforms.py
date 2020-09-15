@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException, StaleElementReferenceException, InvalidArgumentException
 from bs4 import BeautifulSoup
 import imaplib
 import email
@@ -17,7 +17,7 @@ config = json.load(open("config.json"))
 # setting up options
 options = Options()
 options.add_experimental_option("prefs", {"download.default_directory" : config["output"]})
-options.add_argument("--headless")
+#options.add_argument("--headless")
 
 class GoogleKeywordPlanner:
     options = Options()
@@ -145,8 +145,7 @@ class JungleScout:
         # setup browser
         self.browser = webdriver.Chrome(config["chromedriver_path"], options=options)
         self.browser.set_window_size(1280, 720)
-        self.browser.get("https://www.junglescout.com")
-        self.browser.find_element_by_xpath("//*[@id=\"js-menu--desktop\"]/ul/li[6]/a").click()
+        self.browser.get("https://members.junglescout.com/login")
         while True:
             try:
                 self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/input[1]").send_keys(credentials["email"])
@@ -157,14 +156,29 @@ class JungleScout:
         url = self.browser.current_url
         self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/div/button").click()
         while url == self.browser.current_url:
-            pass
+            try:
+                self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/div/button").click()
+            except (ElementClickInterceptedException, StaleElementReferenceException, NoSuchElementException):
+                sleep(0.25)
 
     def search(self, keywords):
         self.getMails(keywords.lower())
         self.checkMails()
 
     def getMails(self, keywords):
-        self.browser.get("https://members.junglescout.com/#/keyword")
+        while True:
+            self.browser.get("https://members.junglescout.com/#/keyword")
+            try:
+                connectionTest = self.browser.get("//*[@id=\"app-content\"]/div[2]/div/div/div[2]/h3")
+                print(type(connectionTest.text))
+                print("x{}x".format(connectionTest.text))
+                print(connectionTest.text == "404")
+                if connectionTest.text == "404":
+                    self.browser.get("https://members.junglescout.com/")
+                    continue
+            except (NoSuchElementException, InvalidArgumentException):
+                sleep(0.1)
+            break
 
         while True:
             try:
@@ -180,20 +194,35 @@ class JungleScout:
 
         self.browser.find_element_by_xpath("//*[@id=\"app-content\"]/div[2]/div/div[2]/div[2]/button").click()
 
+        downloadConfirmed = True
         # download button
         while True:
             try:
-                self.browser.find_element_by_xpath("//*[@id=\"app-content\"]/div[2]/div/div[3]/div[3]/div/button").click()
-                break
+                if downloadConfirmed:
+                    # "Download CSV" button
+                    self.browser.find_element_by_xpath("//*[@id=\"app-content\"]/div[2]/div/div[3]/div[3]/div/button").click()
+                else:
+                    break
+                for _ in range(20):
+                    sleep(0.5)
+                    try:
+                        confirm = self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[2]/div/div/div")
+                    except NoSuchElementException:
+                        confirm = "error"
+                    if confirm.text.startswith("When the CSV file is ready"):
+                        downloadConfirmed = False
+                        break
             except Exception as e:
                 if isinstance(e, ElementClickInterceptedException):
-                    self.browser.find_element_by_xpath("//*[@id=\"_pendo_g_fkRG-UFEgcEBLPnYNRw7hpzcFgo\"]/div/div/div/a[2]").click()
+                    try:
+                        self.browser.find_element_by_xpath("//*[@id=\"_pendo_g_fkRG-UFEgcEBLPnYNRw7hpzcFgo\"]/div/div/div/a[2]").click()
+                    except NoSuchElementException:
+                        sleep(0.5)
                 sleep(0.5)
         self.items += 1
 
     def checkMails(self):
         while self.doneItems != self.items:
-
             status, messages = self.imap.select("INBOX")
             messages = int(messages[0])
 
@@ -209,6 +238,8 @@ class JungleScout:
                             download_link = soup.find("a", attrs={"target": "_blank" ,"style": "color: #f57706;"}).text
                             self.browser.get(download_link)
                             self.doneItems += 1
+                            if self.doneItems > self.items:
+                                self.doneItems = self.items
             sleep(5)
         for file in os.listdir("output"):
             if file.startswith("Keyword_Scout"):
@@ -217,6 +248,7 @@ class JungleScout:
                 print("\"{}\" (junglescout) exported.".format(keyword))
 
 # controlla i caratteri speciali per ogni piattaforma.
+# pulizia file marci alla fine di tutte le piattaforme
 
 if __name__ == "__main__":
     # getting keywords

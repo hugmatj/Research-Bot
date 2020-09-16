@@ -13,6 +13,7 @@ config = json.load(open("config.json"))
 # setting up options
 options = Options()
 options.add_experimental_option("prefs", {"download.default_directory" : config["output"]})
+options.add_argument("user-data-dir=/home/andrei/.config/google-chrome")
 #options.add_argument("--headless")
 
 # controlla i caratteri speciali per ogni piattaforma.
@@ -22,10 +23,10 @@ options.add_experimental_option("prefs", {"download.default_directory" : config[
 
 if __name__ == "__main__":
     # getting keywords
-    #test = GoogleKeywordPlanner(options)
-    keywords = open("keywords.txt").read().strip().split("\n")
+    test = GoogleKeywordPlanner(options)
+    #keywords = open("keywords.txt").read().strip().split("\n")
     #kwf = KWFinder(config["KWF"], options)
-    js = JungleScout(config["JS"], options)
-    for keyword in keywords:
-        #kwf.search(keyword)
-        js.search(keyword)
+    #js = JungleScout(config["JS"], options)
+    #for keyword in keywords:
+    #    #kwf.search(keyword)
+    #    js.search(keyword)

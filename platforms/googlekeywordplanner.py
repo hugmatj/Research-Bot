@@ -12,14 +12,18 @@ class GoogleKeywordPlanner:
 
     def __init__(self, options):
         self.browser = webdriver.Chrome(config["chromedriver_path"], options=options)
-        self.browser.get("https://www.youtube.com/")
-        cookies = pickle.load(open("cookies.pkl", "rb"))
-        for cookie in cookies:
-            self.browser.add_cookie(cookie)
-        print("cookies added.")
-        self.browser.refresh()
+        #self.browser.get("https://stackoverflow.com/")
+        self.browser.get("https://ads.google.com/intl/it_it/home/tools/keyword-planner/")
+        #cookies = pickle.load(open("cookies.pkl", "rb"))
+        #for cookie in cookies:
+        #    self.browser.add_cookie(cookie)
+        #print("cookies added.")
+        #self.browser.refresh()
+        #self.browser.get("https://www.youtube.com")
         #while True:
             #print("dumping cookies...")
+            #with open("cookiestext.txt", "w") as file:
+                #file.write(str(self.browser.get_cookies()))
             #pickle.dump(self.browser.get_cookies() , open("cookies.pkl","wb"))
             #sleep(5)
 

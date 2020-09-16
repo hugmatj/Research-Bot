@@ -1,5 +1,9 @@
 beautifulsoup4==4.9.1
 bs4==0.0.1
+evdev==1.3.0
+pynput==1.7.1
+python-xlib==0.27
 selenium==3.141.0
+six==1.15.0
 soupsieve==2.0.1
 urllib3==1.25.10

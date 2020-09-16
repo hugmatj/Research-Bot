@@ -8,8 +8,12 @@ import email
 from email.header import decode_header
 import webbrowser
 from time import sleep
+import pickle
 import json
 import os
+from pynput.mouse import Button, Controller
+from pynput.keyboard import Key
+from pynput.keyboard import Controller as KeyboardController
 
 # get config
 config = json.load(open("config.json"))
@@ -23,8 +27,19 @@ class GoogleKeywordPlanner:
     options = Options()
 
     def __init__(self):
-        username = "thomasegiacomoselfpublishing@gmail.com"
-        password = "Proposte2019"
+        self.browser = webdriver.Chrome(config["chromedriver_path"], options = options)
+        self.browser.get("https://www.youtube.com/")
+        cookies = pickle.load(open("cookies.pkl", "rb"))
+        for cookie in cookies:
+            self.browser.add_cookie(cookie)
+        print("cookies added.")
+        self.browser.refresh()
+        #while True:
+            #print("dumping cookies...")
+            #pickle.dump(self.browser.get_cookies() , open("cookies.pkl","wb"))
+            #sleep(5)
+
+    def initialise(self):
         #self.browser = webdriver.Chrome("/home/andrei/Documenti/Lavori/keywords-bot/chromedriver", options=self.options)
         #self.browser.get("https://ads.google.com/aw/keywordplanner/ideas/new?ocid=537997864&euid=427576287&__u=8073802663&uscid=537997864&__c=8676706536&authuser=4&subid=it-it-ha-aw-bk-c-bau%21o3~CjwKCAjwnef6BRAgEiwAgv8mQfSEBgWYMw7_xcFhCa8EFKf8UdjckIT83dQGZ7Y9eS_j6t1C-oJSPhoC1VAQAvD_BwE~60200838689~")
         #loginButton = self.browser.find_element_by_xpath("//*[@id=\"gb_70\"]")
@@ -247,14 +262,41 @@ class JungleScout:
                 os.rename("output/{}".format(file), "output/{} junglescout.csv".format(keyword))
                 print("\"{}\" (junglescout) exported.".format(keyword))
 
+class PublisherRocket:
+
+    def __init__(self, actions):
+        self.mouse = Controller()
+        self.keyboard = KeyboardController()
+        self.actions = actions
+        self.compileActions(self.actions["init"])
+
+    def search(init, keywords):
+        self.compileActions(self.actions["search"], chars={"keywords": keywords})
+        # gestione del file scaricato
+        pass
+
+    def compileActions(self, actions : list, chars = {}):
+        for action in actions:
+            if action["mouse"]:
+                self.mouse.position = action["pos"]
+                self.mouse.press(Button.left)
+                self.mouse.release(Button.left)
+            else:
+                text = chars[action["chars"]]
+                for char in text:
+                    self.keyboard.press(char)
+                    self.keyboard.release(char)
+            sleep(action["delay"])
+
 # controlla i caratteri speciali per ogni piattaforma.
 # pulizia file marci alla fine di tutte le piattaforme
 
 if __name__ == "__main__":
     # getting keywords
-    keywords = open("keywords.txt").read().strip().split("\n")
-    kwf = KWFinder(config["KWF"])
-    js = JungleScout(config["JS"])
-    for keyword in keywords:
-        kwf.search(keyword)
-        js.search(keyword)
+    test = GoogleKeywordPlanner()
+    #keywords = open("keywords.txt").read().strip().split("\n")
+    #kwf = KWFinder(config["KWF"])
+    #js = JungleScout(config["JS"])
+    #for keyword in keywords:
+        #kwf.search(keyword)
+        #js.search(keyword)

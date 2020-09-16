@@ -1,0 +1,10 @@
+{
+  "init": [
+    {"mouse": true, "pos": [1, 2], "delay" = 1},
+    {"mouse": true, "pos": [2, 3], "delay" = 1}
+  ],
+  "search": [
+    {"mouse": true, "pos": [5, 5], "delay" = 1},
+    {"mouse": false, "chars": "keywords", "delay" = 1}
+  ]
+}

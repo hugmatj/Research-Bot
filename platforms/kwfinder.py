@@ -5,14 +5,10 @@ from selenium.common.exceptions import NoSuchElementException, ElementClickInter
 from time import sleep
 import os
 
-import json
-
-config = json.load(open("config.json"))
-
 class KWFinder:
 
-    def __init__(self, credentials, options):
-        self.browser = webdriver.Chrome(config["chromedriver_path"], options=options)
+    def __init__(self, config, options):
+        self.browser = webdriver.Chrome(self.config["chromedriver_path"], options=options)
         self.browser.set_window_size(1280, 720)
         self.browser.get("https://kwfinder.com")
         while True:
@@ -23,11 +19,11 @@ class KWFinder:
                 sleep(0.5)
         while True:
             try:
-                self.browser.find_element_by_xpath("//*[@id=\"user_email\"]").send_keys(credentials["email"])
+                self.browser.find_element_by_xpath("//*[@id=\"user_email\"]").send_keys(self.config["KWF"]["email"])
                 break
             except NoSuchElementException:
                 sleep(0.5)
-        self.browser.find_element_by_xpath("//*[@id=\"user_password\"]").send_keys(credentials["password"])
+        self.browser.find_element_by_xpath("//*[@id=\"user_password\"]").send_keys(self.config["KWF"]["password"])
         self.browser.find_element_by_xpath("//*[@id=\"new_user\"]/div[4]/button").click()
         while self.browser.current_url != "https://app.kwfinder.com/":
             pass

@@ -4,14 +4,10 @@ from selenium.common.exceptions import NoSuchElementException, ElementClickInter
 from time import sleep
 import pickle
 
-import json
-
-config = json.load(open("config.json"))
-
 class GoogleKeywordPlanner:
 
-    def __init__(self, options):
-        self.browser = webdriver.Chrome(config["chromedriver_path"], options=options)
+    def __init__(self, config, options):
+        self.browser = webdriver.Chrome(self.config["chromedriver_path"], options=options)
         #self.browser.get("https://stackoverflow.com/")
         self.browser.get("https://ads.google.com/intl/it_it/home/tools/keyword-planner/")
         #cookies = pickle.load(open("cookies.pkl", "rb"))

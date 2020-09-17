@@ -8,18 +8,14 @@ import imaplib
 import email
 import os
 
-import json
-
-config = json.load(open("config.json"))
-
 class JungleScout:
     items = 0
     doneItems = 0
 
-    def __init__(self, credentials, options):
+    def __init__(self, config, options):
         # setup email
         self.imap = imaplib.IMAP4_SSL("imap.gmail.com")
-        self.imap.login(config["GKP"]["email"], config["GKP"]["password"])
+        self.imap.login(self.config["GKP"]["email"], self.config["GKP"]["password"])
         status, messages = self.imap.select("INBOX")
         messages = int(messages[0])
         self.newMessages = []
@@ -27,16 +23,16 @@ class JungleScout:
             self.newMessages.append(str(i))
 
         # setup browser
-        self.browser = webdriver.Chrome(config["chromedriver_path"], options=options)
+        self.browser = webdriver.Chrome(self.config["chromedriver_path"], options=options)
         self.browser.set_window_size(1280, 720)
         self.browser.get("https://members.junglescout.com/login")
         while True:
             try:
-                self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/input[1]").send_keys(credentials["email"])
+                self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/input[1]").send_keys(self.config["JS"]["email"])
                 break
             except NoSuchElementException:
                 sleep(0.5)
-        self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/input[2]").send_keys(credentials["password"])
+        self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/input[2]").send_keys(self.config["JS"]["password"])
         url = self.browser.current_url
         self.browser.find_element_by_xpath("//*[@id=\"root\"]/div/div[1]/div/div/div/div[2]/div/button").click()
         while url == self.browser.current_url:

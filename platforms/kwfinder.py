@@ -8,6 +8,7 @@ import os
 class KWFinder:
 
     def __init__(self, config, options):
+        self.config = config
         self.browser = webdriver.Chrome(self.config["chromedriver_path"], options=options)
         self.browser.set_window_size(1280, 720)
         self.browser.get("https://kwfinder.com")

@@ -13,6 +13,7 @@ class JungleScout:
     doneItems = 0
 
     def __init__(self, config, options):
+        self.config = config
         # setup email
         self.imap = imaplib.IMAP4_SSL("imap.gmail.com")
         self.imap.login(self.config["GKP"]["email"], self.config["GKP"]["password"])

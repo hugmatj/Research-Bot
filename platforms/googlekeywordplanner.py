@@ -1,46 +1,42 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, ElementNotInteractableException, StaleElementReferenceException, InvalidArgumentException
+from pynput.mouse import Button, Controller
+from pynput.keyboard import Key
+from pynput.keyboard import Controller as KeyboardController
 from time import sleep
-import pickle
+import os
 
 class GoogleKeywordPlanner:
 
-    def __init__(self, config, options):
-        self.browser = webdriver.Chrome(self.config["chromedriver_path"], options=options)
-        #self.browser.get("https://stackoverflow.com/")
-        self.browser.get("https://ads.google.com/intl/it_it/home/tools/keyword-planner/")
-        #cookies = pickle.load(open("cookies.pkl", "rb"))
-        #for cookie in cookies:
-        #    self.browser.add_cookie(cookie)
-        #print("cookies added.")
-        #self.browser.refresh()
-        #self.browser.get("https://www.youtube.com")
-        #while True:
-            #print("dumping cookies...")
-            #with open("cookiestext.txt", "w") as file:
-                #file.write(str(self.browser.get_cookies()))
-            #pickle.dump(self.browser.get_cookies() , open("cookies.pkl","wb"))
-            #sleep(5)
+    def __init__(self, config, actions):
+        self.config = config
+        self.mouse = Controller()
+        self.keyboard = KeyboardController()
+        self.actions = actions
 
-    def initialise(self):
-        #self.browser = webdriver.Chrome("/home/andrei/Documenti/Lavori/keywords-bot/chromedriver", options=self.options)
-        #self.browser.get("https://ads.google.com/aw/keywordplanner/ideas/new?ocid=537997864&euid=427576287&__u=8073802663&uscid=537997864&__c=8676706536&authuser=4&subid=it-it-ha-aw-bk-c-bau%21o3~CjwKCAjwnef6BRAgEiwAgv8mQfSEBgWYMw7_xcFhCa8EFKf8UdjckIT83dQGZ7Y9eS_j6t1C-oJSPhoC1VAQAvD_BwE~60200838689~")
-        #loginButton = self.browser.find_element_by_xpath("//*[@id=\"gb_70\"]")
-        #loginButton.click()
+    def search(self, keywords):
+        keywords_text = ""
+        for keyword in keywords:
+            keywords_text += ", {}".format(keyword)
+        self.compileActions(self.actions["search_gkp"], chars={"keywords": keywords_text, "url": self.config["gkp_url"]})
+        sleep(10)
+        for file in os.listdir(self.config["output"]):
+            if file.startswith("Keyword Stats"):
+                os.rename("{}/{}".format(config["output"], file), "{} gkp.csv".format(keywords_text[2:]))
+                break
+        print("(GKP) keywords extracted.")
 
-        #emailField = self.browser.find_element_by_xpath("//*[@id=\"identifierId\"]")
-        #emailField.send_keys()
-
-        self.driver = webdriver.Chrome('./chromedriver')
-        self.driver.get('https://stackoverflow.com/users/signup?ssrc=head&returnurl=%2fusers%2fstory%2fcurrent%27')
-        sleep(3)
-        self.driver.find_element_by_xpath('//*[@id="openid-buttons"]/button[1]').click()
-        self.driver.find_element_by_xpath('//input[@type="email"]').send_keys(username)
-        self.driver.find_element_by_xpath('//*[@id="identifierNext"]').click()
-        sleep(3)
-        self.driver.find_element_by_xpath('//input[@type="password"]').send_keys(password)
-        self.driver.find_element_by_xpath('//*[@id="passwordNext"]').click()
-        sleep(2)
-        self.driver.get('https://youtube.com')
-        sleep(5)
+    def compileActions(self, actions : list, chars = {}):
+        for action in actions:
+            print("doing something")
+            if action["mouse"]:
+                self.mouse.position = action["pos"]
+                self.mouse.press(Button.left)
+                self.mouse.release(Button.left)
+            else:
+                text = chars[action["chars"]]
+                for char in text:
+                    self.keyboard.press(char)
+                    self.keyboard.release(char)
+                if "url" in chars:
+                    self.keyboard.press(Key.enter)
+                    sleep(20)
+            sleep(action["delay"])

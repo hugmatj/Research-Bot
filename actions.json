@@ -1,40 +1,239 @@
 {
-  "init": [
-   {
-    "mouse": true,
-    "pos": [
-     21,
-     1002
-    ],
-    "delay": 1
-   },
-   {
-    "mouse": true,
-    "pos": [
-     22,
-     912
-    ],
-    "delay": 1
-   },
-   {
-    "mouse": true,
-    "pos": [
-     198,
-     249
-    ],
-    "delay": 1
-   },
-   {
-    "mouse": true,
-    "pos": [
-     133,
-     804
-    ],
-    "delay": 1
-   }
-  ],
-  "search": [
-    {"mouse": true, "pos": [5, 5], "delay": 1},
-    {"mouse": false, "chars": "keywords", "delay": 1}
-  ]
+  "search_pr": [
+  {
+   "mouse": true,
+   "pos": [
+    442,
+    505
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1003,
+    625
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "keyword",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1022,
+    717
+   ],
+   "delay": 7.5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1560,
+    291
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    887,
+    339
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "directory",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1142,
+    726
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "filename_1",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1090,
+    794
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1382,
+    293
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1029,
+    629
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "keyword",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1150,
+    620
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1129,
+    691
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1023,
+    720
+   ],
+   "delay": 7.5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1560,
+    293
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    913,
+    341
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "directory",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1142,
+    726
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": false,
+   "chars": "filename_2",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1095,
+    794
+   ],
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1648,
+    108
+   ],
+   "delay": 1
+  }
+ ],
+  "search_gkp": [
+  {
+   "mouse": true,
+   "pos": [
+    448,
+    13
+   ],
+   "delay": 5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    162,
+    77
+   ],
+   "delay": 5
+  },
+  {
+   "mouse": false,
+   "chars": "url",
+   "delay": 20
+  },
+  {
+   "mouse": true,
+   "pos": [
+    473,
+    404
+   ],
+   "delay": 5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    495,
+    454
+   ],
+   "delay": 3
+  },
+  {
+   "mouse": false,
+   "chars": "keywords",
+   "delay": 1
+  },
+  {
+   "mouse": true,
+   "pos": [
+    456,
+    699
+   ],
+   "delay": 5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1787,
+    328
+   ],
+   "delay": 5
+  },
+  {
+   "mouse": true,
+   "pos": [
+    1735,
+    359
+   ],
+   "delay": 5
+ },
+ {"mouse": true, "pos": [13, 41], "delay": 5}
+ ]
 }

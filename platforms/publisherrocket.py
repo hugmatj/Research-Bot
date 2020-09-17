@@ -2,24 +2,21 @@ from pynput.mouse import Button, Controller
 from pynput.keyboard import Key
 from pynput.keyboard import Controller as KeyboardController
 from time import sleep
+import subprocess
 import os
-
-import json
-
-config = json.load(open("config.json"))
 
 class PublisherRocket:
 
-    def __init__(self, actions):
+    def __init__(self, config, actions):
+        self.config = config
         self.mouse = Controller()
         self.keyboard = KeyboardController()
         self.actions = actions
-        self.compileActions(self.actions["init"])
 
-    def search(init, keywords):
-        self.compileActions(self.actions["search"], chars={"keywords": keywords})
-        # gestione del file scaricato
-        pass
+    def search(self, keywords):
+        subprocess.call(self.config["pr_path"], shell=True)
+        sleep(15)
+        self.compileActions(self.actions["search_pr"], chars={"keyword": keywords, "directory": self.config["output"], "filename_1": "{} publisher rocket (book).csv".format(keywords), "filename_2": "{} publisher rocket (ebook).csv".format(keywords)})
 
     def compileActions(self, actions : list, chars = {}):
         for action in actions:

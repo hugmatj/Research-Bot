@@ -17,26 +17,28 @@ class GoogleKeywordPlanner:
         for keyword in keywords:
             keywords_text += ", {}".format(keyword)
         self.compileActions(self.actions["search_gkp"], chars={"keywords": keywords_text, "url": self.config["gkp_url"]})
-        sleep(10)
+        sleep(3)
         for file in os.listdir(self.config["output"]):
             if file.startswith("Keyword Stats"):
-                os.rename("{}/{}".format(config["output"], file), "{} gkp.csv".format(keywords_text[2:]))
+                os.rename("{}/{}".format(self.config["output"], file), "{}/{} gkp.csv".format(self.config["output"], keywords_text[2:]))
                 break
         print("(GKP) keywords extracted.")
 
+    def click(self):
+        self.mouse.press(Button.left)
+        sleep(0.25)
+        self.mouse.release(Button.left)
+
     def compileActions(self, actions : list, chars = {}):
         for action in actions:
-            print("doing something")
             if action["mouse"]:
                 self.mouse.position = action["pos"]
-                self.mouse.press(Button.left)
-                self.mouse.release(Button.left)
+                self.click()
             else:
                 text = chars[action["chars"]]
                 for char in text:
                     self.keyboard.press(char)
                     self.keyboard.release(char)
-                if "url" in chars:
-                    self.keyboard.press(Key.enter)
-                    sleep(20)
+                self.keyboard.press(Key.enter)
+                self.keyboard.release(Key.enter)
             sleep(action["delay"])

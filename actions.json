@@ -174,20 +174,12 @@
     448,
     13
    ],
-   "delay": 5
-  },
-  {
-   "mouse": true,
-   "pos": [
-    162,
-    77
-   ],
-   "delay": 5
+   "delay": 1.5
   },
   {
    "mouse": false,
    "chars": "url",
-   "delay": 20
+   "delay": 15
   },
   {
    "mouse": true,
@@ -195,7 +187,7 @@
     473,
     404
    ],
-   "delay": 5
+   "delay": 1
   },
   {
    "mouse": true,
@@ -203,7 +195,7 @@
     495,
     454
    ],
-   "delay": 3
+   "delay": 1
   },
   {
    "mouse": false,
@@ -214,7 +206,7 @@
    "mouse": true,
    "pos": [
     456,
-    699
+    750
    ],
    "delay": 5
   },
@@ -222,18 +214,18 @@
    "mouse": true,
    "pos": [
     1787,
-    328
+    278
    ],
-   "delay": 5
+   "delay": 1
   },
   {
    "mouse": true,
    "pos": [
     1735,
-    359
+    310
    ],
-   "delay": 5
+   "delay": 10
  },
- {"mouse": true, "pos": [13, 41], "delay": 5}
+ {"mouse": true, "pos": [13, 41], "delay": 1}
  ]
 }

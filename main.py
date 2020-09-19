@@ -51,7 +51,5 @@ def main():
 
 if __name__ == "__main__":
     #main()
-    pr = PublisherRocket(config, actions)
-    #gkp = GoogleKeywordPlanner(config, actions)
-    #gkp.search(keywords)
-    pr.search(keywords[0])
+    gkp = GoogleKeywordPlanner(config, actions)
+    gkp.search(keywords)
